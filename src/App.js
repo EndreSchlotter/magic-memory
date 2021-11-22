@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css';
+import SingleCard from './components/SingleCard';
 
 const cardImages = [
   { "src": "/img/helmet-1.png" },
@@ -14,6 +15,8 @@ function App() {
 
   const [cards, setCards] = useState([])
   const [turns, setTurns] = useState(0)
+  const [choiceOne, setChoiceOne] = useState(null)
+  const [choiceTwo, setChoiceTwo] = useState(null)
 
   // sort() - when the inner function returns a negative number the items order will remain the same.
   // When it's a positive one, it's going to switch the order around.
@@ -28,24 +31,27 @@ function App() {
     setTurns(0)
   }
 
+  // handle a choice
+
+  const handleChoice = (card) => {
+    choiceOne ? setChoiceTwo(card) : setChoiceOne(card)
+  }
+
   return (
     <div className="App">
       <h1>Magic Match</h1>
       <button onClick={shuffleCards}>New Game</button>
       <div className="card-grid">
         {cards.map(card => (
-          <div className="card" key={card.id}>
-            <div>
-              <img className="front" src={card.src} alt="card front" />
-              <img className="back" src="/img/cover.png" alt="card back" />
-            </div>
-          </div>
+          <SingleCard 
+            key={card.id} 
+            card={card}
+            handleChoice={handleChoice}
+          />
         ))}
       </div>
     </div>
   );
 }
-
-
 
 export default App;
