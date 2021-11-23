@@ -17,6 +17,7 @@ function App() {
   const [turns, setTurns] = useState(0)
   const [choiceOne, setChoiceOne] = useState(null)
   const [choiceTwo, setChoiceTwo] = useState(null)
+  const [disabled, setDisabled] = useState(false)
 
   // sort() - when the inner function returns a negative number the items order will remain the same.
   // When it's a positive one, it's going to switch the order around.
@@ -39,6 +40,7 @@ function App() {
   // compare 2 selected cards
   useEffect(() => {
     if (choiceOne && choiceTwo) {
+      setDisabled(true)
       if (choiceOne.src === choiceTwo.src) {
           setCards( prevCards => {
             return prevCards.map( card => {
@@ -51,18 +53,17 @@ function App() {
           })
         resetTurn()
       } else {
-        resetTurn()
+        setTimeout( () => resetTurn(), 1000)
       }
     }
   }, [choiceOne, choiceTwo])
-
-  console.log(cards);
 
   // reset choices and increase turn
   const resetTurn = () => {
     setChoiceOne(null)
     setChoiceTwo(null)
     setTurns(prevTurns => prevTurns + 1)
+    setDisabled(false)
   }
 
   return (
@@ -76,6 +77,7 @@ function App() {
             card={card}
             handleChoice={handleChoice}
             flipped={card === choiceOne || card === choiceTwo || card.matched}
+            disabled={disabled}
           />
         ))}
       </div>
