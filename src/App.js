@@ -8,7 +8,7 @@ const cardImages = [
   { "src": "/img/ring-1.png", matched: false },
   { "src": "/img/scroll-1.png", matched: false },
   { "src": "/img/shield-1.png", matched: false },
-  { "src": "/img/sword-1.png", matched: false },
+  { "src": "/img/sword-1.png", matched: false }
 ]
 
 function App() {
@@ -28,6 +28,8 @@ function App() {
       // adding an ID to the items
       .map((card) => ({ ...card, id: Math.random() }))
 
+    setChoiceOne(null)
+    setChoiceTwo(null)
     setCards(shuffledCards)
     setTurns(0)
   }
@@ -42,18 +44,18 @@ function App() {
     if (choiceOne && choiceTwo) {
       setDisabled(true)
       if (choiceOne.src === choiceTwo.src) {
-          setCards( prevCards => {
-            return prevCards.map( card => {
-              if (card.src === choiceOne.src) {
-                return { ...card, matched: true}
-              } else {
-                return card
-              }
-            })
+        setCards(prevCards => {
+          return prevCards.map(card => {
+            if (card.src === choiceOne.src) {
+              return { ...card, matched: true }
+            } else {
+              return card
+            }
           })
+        })
         resetTurn()
       } else {
-        setTimeout( () => resetTurn(), 1000)
+        setTimeout(() => resetTurn(), 1000)
       }
     }
   }, [choiceOne, choiceTwo])
@@ -65,6 +67,12 @@ function App() {
     setTurns(prevTurns => prevTurns + 1)
     setDisabled(false)
   }
+
+  // Start a new game automatically
+
+  useEffect(() => {
+    shuffleCards()
+  }, [])
 
   return (
     <div className="App">
@@ -81,7 +89,7 @@ function App() {
           />
         ))}
       </div>
-      <p>{turns}</p>
+      <p>Turns: {turns}</p>
     </div>
   );
 }
